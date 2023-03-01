@@ -1,0 +1,343 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PizzaLaunge_DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="Cus_Id" />
+          </Key>
+          <Property Name="Cus_Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Telephone" Type="int" Nullable="false" />
+          <Property Name="Order_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Payment_ID" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="Order_Id" />
+          </Key>
+          <Property Name="Order_Id" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="OrderDate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Total_Price" Type="int" Nullable="false" />
+          <Property Name="Order_Status" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PAYMENT">
+          <Key>
+            <PropertyRef Name="Payment_ID" />
+          </Key>
+          <Property Name="Payment_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Payment_Status" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Bill" Type="image" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PIZZA">
+          <Key>
+            <PropertyRef Name="Pizza_ID" />
+          </Key>
+          <Property Name="Pizza_ID" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Pizza_Name" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="Price" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="int" Nullable="false" />
+          <Property Name="Order_ID" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TOPPINGS">
+          <Key>
+            <PropertyRef Name="Topping_ID" />
+          </Key>
+          <Property Name="Topping_ID" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Topping_Name" Type="varchar" MaxLength="1" Nullable="false" />
+          <Property Name="Topping_Price" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Pizza_ID" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CUSTOMER_ToTable">
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="1" />
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTOMER_ToTable_1">
+          <End Role="PAYMENT" Type="Self.PAYMENT" Multiplicity="1" />
+          <End Role="CUSTOMER" Type="Self.CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAYMENT">
+              <PropertyRef Name="Payment_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="Payment_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PIZZA_ToTable">
+          <End Role="ORDER" Type="Self.ORDER" Multiplicity="1" />
+          <End Role="PIZZA" Type="Self.PIZZA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="PIZZA">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TOPPINGS_ToTable">
+          <End Role="PIZZA" Type="Self.PIZZA" Multiplicity="1" />
+          <End Role="TOPPINGS" Type="Self.TOPPINGS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PIZZA">
+              <PropertyRef Name="Pizza_ID" />
+            </Principal>
+            <Dependent Role="TOPPINGS">
+              <PropertyRef Name="Pizza_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PizzaLaunge_DatabaseModelStoreContainer">
+          <EntitySet Name="CUSTOMER" EntityType="Self.CUSTOMER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ORDER" EntityType="Self.ORDER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PAYMENT" EntityType="Self.PAYMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PIZZA" EntityType="Self.PIZZA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TOPPINGS" EntityType="Self.TOPPINGS" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CUSTOMER_ToTable" Association="Self.FK_CUSTOMER_ToTable">
+            <End Role="ORDER" EntitySet="ORDER" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTOMER_ToTable_1" Association="Self.FK_CUSTOMER_ToTable_1">
+            <End Role="PAYMENT" EntitySet="PAYMENT" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PIZZA_ToTable" Association="Self.FK_PIZZA_ToTable">
+            <End Role="ORDER" EntitySet="ORDER" />
+            <End Role="PIZZA" EntitySet="PIZZA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TOPPINGS_ToTable" Association="Self.FK_TOPPINGS_ToTable">
+            <End Role="PIZZA" EntitySet="PIZZA" />
+            <End Role="TOPPINGS" EntitySet="TOPPINGS" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PizzaLaunge_DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="CUSTOMER">
+          <Key>
+            <PropertyRef Name="Cus_Id" />
+          </Key>
+          <Property Name="Cus_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Telephone" Type="Int32" Nullable="false" />
+          <Property Name="Order_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Payment_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ORDER" Relationship="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable" FromRole="CUSTOMER" ToRole="ORDER" />
+          <NavigationProperty Name="PAYMENT" Relationship="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable_1" FromRole="CUSTOMER" ToRole="PAYMENT" />
+        </EntityType>
+        <EntityType Name="ORDER">
+          <Key>
+            <PropertyRef Name="Order_Id" />
+          </Key>
+          <Property Name="Order_Id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="OrderDate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Total_Price" Type="Int32" Nullable="false" />
+          <Property Name="Order_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="CUSTOMERs" Relationship="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable" FromRole="ORDER" ToRole="CUSTOMER" />
+          <NavigationProperty Name="PIZZAs" Relationship="PizzaLaunge_DatabaseModel.FK_PIZZA_ToTable" FromRole="ORDER" ToRole="PIZZA" />
+        </EntityType>
+        <EntityType Name="PAYMENT">
+          <Key>
+            <PropertyRef Name="Payment_ID" />
+          </Key>
+          <Property Name="Payment_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Payment_Status" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Bill" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <NavigationProperty Name="CUSTOMERs" Relationship="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable_1" FromRole="PAYMENT" ToRole="CUSTOMER" />
+        </EntityType>
+        <EntityType Name="PIZZA">
+          <Key>
+            <PropertyRef Name="Pizza_ID" />
+          </Key>
+          <Property Name="Pizza_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Pizza_Name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Price" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TOPPINGS" Relationship="Self.FK_TOPPINGS_ToTable" FromRole="PIZZA" ToRole="TOPPINGS" />
+          <Property Name="Order_ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ORDER" Relationship="PizzaLaunge_DatabaseModel.FK_PIZZA_ToTable" FromRole="PIZZA" ToRole="ORDER" />
+        </EntityType>
+        <EntityType Name="TOPPING">
+          <Key>
+            <PropertyRef Name="Topping_ID" />
+          </Key>
+          <Property Name="Topping_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Topping_Name" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Topping_Price" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Pizza_ID" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PIZZA" Relationship="Self.FK_TOPPINGS_ToTable" FromRole="TOPPINGS" ToRole="PIZZA" />
+        </EntityType>
+        <Association Name="FK_TOPPINGS_ToTable">
+          <End Role="PIZZA" Type="Self.PIZZA" Multiplicity="1" />
+          <End Role="TOPPINGS" Type="Self.TOPPING" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PIZZA">
+              <PropertyRef Name="Pizza_ID" />
+            </Principal>
+            <Dependent Role="TOPPINGS">
+              <PropertyRef Name="Pizza_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CUSTOMERs" EntityType="Self.CUSTOMER" />
+          <EntitySet Name="ORDERs" EntityType="Self.ORDER" />
+          <EntitySet Name="PAYMENTs" EntityType="Self.PAYMENT" />
+          <EntitySet Name="PIZZAs" EntityType="Self.PIZZA" />
+          <EntitySet Name="TOPPINGS" EntityType="Self.TOPPING" />
+          <AssociationSet Name="FK_TOPPINGS_ToTable" Association="Self.FK_TOPPINGS_ToTable">
+            <End Role="PIZZA" EntitySet="PIZZAs" />
+            <End Role="TOPPINGS" EntitySet="TOPPINGS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTOMER_ToTable" Association="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable">
+            <End Role="ORDER" EntitySet="ORDERs" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CUSTOMER_ToTable_1" Association="PizzaLaunge_DatabaseModel.FK_CUSTOMER_ToTable_1">
+            <End Role="PAYMENT" EntitySet="PAYMENTs" />
+            <End Role="CUSTOMER" EntitySet="CUSTOMERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PIZZA_ToTable" Association="PizzaLaunge_DatabaseModel.FK_PIZZA_ToTable">
+            <End Role="ORDER" EntitySet="ORDERs" />
+            <End Role="PIZZA" EntitySet="PIZZAs" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="FK_CUSTOMER_ToTable">
+          <End Type="PizzaLaunge_DatabaseModel.ORDER" Role="ORDER" Multiplicity="1" />
+          <End Type="PizzaLaunge_DatabaseModel.CUSTOMER" Role="CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CUSTOMER_ToTable_1">
+          <End Type="PizzaLaunge_DatabaseModel.PAYMENT" Role="PAYMENT" Multiplicity="1" />
+          <End Type="PizzaLaunge_DatabaseModel.CUSTOMER" Role="CUSTOMER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PAYMENT">
+              <PropertyRef Name="Payment_ID" />
+            </Principal>
+            <Dependent Role="CUSTOMER">
+              <PropertyRef Name="Payment_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PIZZA_ToTable">
+          <End Type="PizzaLaunge_DatabaseModel.ORDER" Role="ORDER" Multiplicity="1" />
+          <End Type="PizzaLaunge_DatabaseModel.PIZZA" Role="PIZZA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ORDER">
+              <PropertyRef Name="Order_Id" />
+            </Principal>
+            <Dependent Role="PIZZA">
+              <PropertyRef Name="Order_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PizzaLaunge_DatabaseModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="CUSTOMERs">
+            <EntityTypeMapping TypeName="PizzaLaunge_DatabaseModel.CUSTOMER">
+              <MappingFragment StoreEntitySet="CUSTOMER">
+                <ScalarProperty Name="Payment_ID" ColumnName="Payment_ID" />
+                <ScalarProperty Name="Order_ID" ColumnName="Order_ID" />
+                <ScalarProperty Name="Cus_Id" ColumnName="Cus_Id" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Telephone" ColumnName="Telephone" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ORDERs">
+            <EntityTypeMapping TypeName="PizzaLaunge_DatabaseModel.ORDER">
+              <MappingFragment StoreEntitySet="ORDER">
+                <ScalarProperty Name="Order_Id" ColumnName="Order_Id" />
+                <ScalarProperty Name="OrderDate" ColumnName="OrderDate" />
+                <ScalarProperty Name="Total_Price" ColumnName="Total_Price" />
+                <ScalarProperty Name="Order_Status" ColumnName="Order_Status" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PAYMENTs">
+            <EntityTypeMapping TypeName="PizzaLaunge_DatabaseModel.PAYMENT">
+              <MappingFragment StoreEntitySet="PAYMENT">
+                <ScalarProperty Name="Payment_ID" ColumnName="Payment_ID" />
+                <ScalarProperty Name="Payment_Status" ColumnName="Payment_Status" />
+                <ScalarProperty Name="Bill" ColumnName="Bill" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PIZZAs">
+            <EntityTypeMapping TypeName="PizzaLaunge_DatabaseModel.PIZZA">
+              <MappingFragment StoreEntitySet="PIZZA">
+                <ScalarProperty Name="Order_ID" ColumnName="Order_ID" />
+                <ScalarProperty Name="Pizza_ID" ColumnName="Pizza_ID" />
+                <ScalarProperty Name="Pizza_Name" ColumnName="Pizza_Name" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TOPPINGS">
+            <EntityTypeMapping TypeName="PizzaLaunge_DatabaseModel.TOPPING">
+              <MappingFragment StoreEntitySet="TOPPINGS">
+                <ScalarProperty Name="Topping_ID" ColumnName="Topping_ID" />
+                <ScalarProperty Name="Topping_Name" ColumnName="Topping_Name" />
+                <ScalarProperty Name="Topping_Price" ColumnName="Topping_Price" />
+                <ScalarProperty Name="Pizza_ID" ColumnName="Pizza_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
